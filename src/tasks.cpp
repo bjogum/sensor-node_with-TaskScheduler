@@ -43,6 +43,7 @@ void readPrio3Sensors(){
         
     case READING_WATER:
         //läs water leak
+        Serial.println("Water-Leak\n");
         currentSensor = READING_DHT;
         break;
     }
