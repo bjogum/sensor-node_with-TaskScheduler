@@ -1,21 +1,10 @@
 // --- definierar HUR (sekvensen) och VAD som ska köras --- 
 #include "tasks.h"
+#include "alarm.h"
 #include "sensor_dht11.h"
 #include <stdio.h>
 #include <Arduino.h>
 #define numOfPrio3Sensors 2
-
-// Definition av sensor-datan (i extern variabel)
-SensorData sensorStatus = {
-    .reedSensor1 = false,
-    .reedSensor2 = false,
-    .motionDetect = false,
-    .smokeSensor = false,
-    .fireTemp = 0.0,
-    .indoorTemp = 0.0,
-    .indoorHumidity = 0.0,
-    .waterLeak = false,
-};
 
 
 void readPrio3Sensors(){
@@ -28,9 +17,9 @@ void readPrio3Sensors(){
 
         // -- DEBUG --
         Serial.print("Temp: ");
-        Serial.print(sensorStatus.indoorTemp, 1); // 1 decimal
+        Serial.print(node.sensors.indoorTemp, 1); // 1 decimal
         Serial.print(" C | Fukt: ");
-        Serial.print(sensorStatus.indoorHumidity, 1);
+        Serial.print(node.sensors.indoorHumidity, 1);
         Serial.println(" %");
         // -- DEBUG --
 

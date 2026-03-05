@@ -68,16 +68,6 @@ void taskScheduler(){
     }
   };
   
-  // Kolla om den nuvarande TASKEN bör köras - alltså: är nuvarande tid MINUS lastrun mer eller lika med intervall?
-  // Om TRUE -> kör
-      // switch-case -> Prio3=readPrio3Sensors();
-  // Om FALSE -> loopa vidare
-
-   // läs (Prio 3) sensorer -> var 2:e sek? * 2.
-
-  // 
-  // om larm triggats - skicka till ESP (via BLE)
-
 
 };
 

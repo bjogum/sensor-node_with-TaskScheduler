@@ -1,6 +1,7 @@
 #include "tasks.h"
 #include "config.h"
 #include "sensor_dht11.h"
+#include "alarm.h"
 
 DHT dht(DHT_PIN, DHT_TYPE, 6);
 
@@ -17,7 +18,7 @@ bool getDHTData() {
         return false; 
     }
 
-    sensorStatus.indoorTemp = t;
-    sensorStatus.indoorHumidity = h;
+    node.sensors.indoorTemp = t;
+    node.sensors.indoorHumidity = h;
     return true;
 }
