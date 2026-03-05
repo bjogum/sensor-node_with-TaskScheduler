@@ -3,9 +3,10 @@
 #include <Arduino.h>
 #include "tasks.h"
 #include "alarm.h"
+#include "wifi_manager.h"
 
 // enum för resp. PRIO-klass.
-enum TaskType {sensorPrio1, sensorPrio2, sensorPrio3, serviceCheckAlarm, serviceBLE, serviceWiFi};
+enum TaskType {sensorPrio1, sensorPrio2, sensorPrio3, serviceCheckAlarm, serviceBLE, serviceWiFi, serviceMQTT};
 
 // struct för resp. TASK, innehållande: [Prioklass/funktion] - [intervall (ms)] - [senaste körningen (ms)]
 // [ersätter ev. prioType med funktionspekare senare..]
@@ -22,7 +23,8 @@ Tasks taskList[] = {
     {sensorPrio3, 1500},  // Temp, fukt, lekage            -> 1500ms
     {serviceCheckAlarm, 100},  // Kolla om larm är aktivt  -> 1500ms
     {serviceBLE, 100,50}, // håll BLE aktivt & skcka data - lastRun 50ms ("offset"): underviker krock med Wifi-> 100ms
-    {serviceWiFi, 100},   // håll WiFi aktivt & skcka data -> 100ms
+    {serviceWiFi, 5000},   // håll WiFi aktivt & skcka data -> 5000ms
+    {serviceMQTT, 100},   // håll WiFi aktivt & skcka data -> 100ms
 };
 
 void taskScheduler(){
@@ -61,8 +63,14 @@ void taskScheduler(){
         break;
 
       case serviceWiFi:
-        // håll Wifi igång -> skicka aktuell data
+        // kolla så wifi är anslutet
+        manageWiFi();
         break;
+
+      case serviceMQTT:
+        // sub/pub mqtt
+        break;    
+
       }
       taskList[i].lastRun = sysTime;
     }
