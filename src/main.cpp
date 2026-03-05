@@ -2,13 +2,13 @@
 #include "scheduler.h"
 #include "sensor_dht11.h"
 #include "wifi_manager.h"
-
+#include "tasks.h"
+#include <ArduinoBLE.h>
 
 void setup() {
   Serial.begin(115200);
-  delay(2000); // För DHT11, behöver uppstartstid innan init
   initWiFi();
-  initDHT(); 
+  sensorsInit();
   // attachInterrupt --- HW interrupt: bryter pågående (lägre prioriterad) process omedelbart
 }
 

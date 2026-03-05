@@ -6,6 +6,11 @@
 #include <Arduino.h>
 #define numOfPrio3Sensors 2
 
+void sensorsInit(){
+    initDHT();
+    // initDS18B20();
+}
+
 
 void readPrio3Sensors(){
     static int currentSensor = READING_DHT; // static -> sätts endast EN gång (init)

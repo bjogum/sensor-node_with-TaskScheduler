@@ -8,6 +8,7 @@ enum SensorState {
     READING_WATER
 };
 
+void sensorsInit();
 void readPrio3Sensors();
 
 
