@@ -9,7 +9,6 @@ void setup() {
   Serial.begin(115200);
   while (!Serial); // testar om detta behövs..
   delay(2000); // testar om detta behövs..
-  Serial.println("\n--BOOT--\n");
   initComponents();
   // attachInterrupt --- HW interrupt: bryter pågående (lägre prioriterad) process omedelbart
 }
