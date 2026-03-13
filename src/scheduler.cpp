@@ -74,8 +74,6 @@ void taskScheduler(){
       case serviceMQTT:
         // sub/pub mqtt
         manageMQTT();
-        sendMQTT();
-        receiveMQTT();
         break;    
 
       }
