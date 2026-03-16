@@ -6,10 +6,10 @@
 #define MQTT_SEND_TIME 2000 // skicka MQTT varannan sek
 #define MQTT_RECONNECT_TIME 30000 // reconnect, 30s
 #define MQTT_CONNECTION_TIMEOUT 1000
+#define MQTT_HEARTBEAT 15000
 
 WiFiClient wifiClient;
 MqttClient mqttClient(wifiClient);
-IPAddress ipReturn; // Needed to ping broker before trying MQTT-connect
 
 int willQos                      = 1;
 int port                         = 8883;
@@ -35,16 +35,12 @@ unsigned long MQTTLastSendTimer = 0;
 
 bool manageMQTT() {
 
-    // d) LWT: Maxtid, 10s offline -> ESP ger larm 
-    // skriv testamentet här...
-    // 1. Definiera dina inställningar (gör detta innan connect)
-
     // testamente
     mqttClient.beginWill(willTopic, willRetain, willQos);
     mqttClient.print(willPayload);
     mqttClient.endWill();
 
-    mqttClient.setKeepAliveInterval(15000);                     // heartbeat, 15s
+    mqttClient.setKeepAliveInterval(MQTT_HEARTBEAT);            // heartbeat, 15s
     mqttClient.setConnectionTimeout(MQTT_CONNECTION_TIMEOUT);   // sätter tiden till max 1s
 
     if ((node.sysTime - MQTTConnectTimer >= MQTT_RECONNECT_TIME) && (!node.connectionStatus.mqttIsActive) ){ 
@@ -70,7 +66,7 @@ bool manageMQTT() {
 }
 
 void initSendMQTT(){
-        // one-time, init messages
+    // one-time, init messages
     mqttClient.beginMessage(willTopic, true, 1, false);
     mqttClient.print("ONLINE");
     mqttClient.endMessage();
@@ -83,7 +79,7 @@ void sendMQTT(){
 
     if (node.sysTime - MQTTLastSendTimer >= MQTT_SEND_TIME){
         MQTTLastSendTimer = node.sysTime;
-        mqttClient.beginMessage(indoorTempTopic,false, 0,false);
+        mqttClient.beginMessage(indoorTempTopic,false, 0,false); // QoS = 0
         mqttClient.print(node.sensors.indoorTemp);
         if (mqttClient.endMessage()) {
             Serial.println("Temp: Sent!");
